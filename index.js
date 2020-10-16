@@ -24,24 +24,9 @@ client.connect(err => {
     const reviewCollection = client.db("creativeAgency").collection("review");
 
     app.post('/addOrder', (req, res) => {
-        const file = req.files.file;
-        const name = req.body.name;
-        const email = req.body.email;
-        const serviceName = req.body.serviceName;
-        const serviceDetail = req.body.serviceDetail;
-        const serviceIcon = req.body.serviceIcon;
-        const projectDetail = req.body.projectDetail;
+        const orderInfo = req.body;
 
-        const newImg = file.data;
-        const encImg = newImg.toString('base64');
-
-        const image = {
-            contentType: file.mimetype,
-            size: file.size,
-            img: Buffer.from(encImg, 'base64')
-        };
-
-        orderCollection.insertOne({name, email, serviceName, serviceIcon, serviceDetail, image, projectDetail})
+        orderCollection.insertOne(orderInfo)
         .then(result => {
             res.send(result.insertedCount > 0)
         })
